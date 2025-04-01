@@ -9,12 +9,12 @@ img {
 
 @font-face {
     font-family: 'Didot';
-    src: url('styles/Didot.ttf') format('truetype');
+    src: url('Didot.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Baskerville';
-    src: url('styles/Baskerville.ttf') format('truetype');
+    src: url('Baskerville.ttf') format('truetype');
 }
 
 h1, h2, h3, h4 {
