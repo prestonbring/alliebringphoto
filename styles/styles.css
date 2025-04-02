@@ -25,6 +25,12 @@ body, p, a, ul, li, nav, div {
     font-family: 'Baskerville', serif;
 }
 
+br {
+    user-select: none; /* Prevent selection */ 
+    visibility: hidden; /* Hide the element */ 
+    height: 0; /* Collapse space */ 
+} 
+
 body {
 	/* user-select: none; /* Prevent text selection */
     margin: 0;
