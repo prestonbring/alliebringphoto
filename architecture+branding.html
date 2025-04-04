@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexi Lynn Photography</title>
+    <title>Allie Bring Photography</title>
 	<link rel="shortcut icon" type="image/png" href="styles/shortcuticon.png"/>
 	<style>
     /* CSS Styles */
@@ -34,6 +34,12 @@ h1, h2, h3, h4 {
 body, p, a, ul, li, nav, div {
     font-family: 'Baskerville', serif;
 }
+
+br {
+    user-select: none; /* Prevent selection */ 
+    visibility: hidden; /* Hide the element */ 
+    height: 0; /* Collapse space */ 
+} 
 
 body {
 	/* user-select: none; /* Prevent text selection */
@@ -427,28 +433,30 @@ h2 a:hover {
 	
 	
 	
-	.portfolio-container {
-		display: flex;
-    	flex-wrap: wrap; /* Allow wrapping */
-		justify-content: center;
-    	gap: 2rem; /* Space between images */
+    .portfolio-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping */
+        justify-content: center;
+        gap: 1rem; /* Space between images */
+        max-width: 50%; /* Set a maximum width for the container */
+        margin: 0 auto; /* Center the container */
     }
 
     .portfolio-item {
-		flex: 1 1 calc(25% - 1rem); /* 4 images per row */
-    	max-width: calc(25% - 1rem); /* Ensure it doesn’t exceed this width */
-    	margin-bottom: 1rem; /* Space below each item */
-    	position: relative;
-    	overflow: hidden; /* Optional: if you want to hide overflow */
+        flex: 1 1 calc(40% - 1rem); /* Two images per row */
+        max-width: calc(40% - 1rem); /* Ensure it doesn’t exceed this width */
+        margin: 1rem 1; /* Equal spacing above and below */
+        position: relative;
+        overflow: hidden; /* Ensures overflow is hidden */
     }
 
     .portfolio-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: filter 0.3s ease;
+        width: 100%;
+        height: 100%; /* Set height to 100% to fill the item */
+        object-fit: cover; /* Change from 'contain' to 'cover' to crop the image */
+        transition: filter 0.3s ease;
     }
-
+    
     .portfolio-item:hover img {
       filter: brightness(0.7);
     }
@@ -534,7 +542,12 @@ h2 a:hover {
 		padding-right: 17px; /* Adjust based on scrollbar width */
 	}
 
-
+    body.no-scroll {
+        overflow: hidden; /* Prevent scrolling */
+        position: fixed; /* Fixes the body's position */
+        width: 100%; /* Ensures the full width is preserved */
+        top: 0; /* Reset top position */
+    }  
 	</style>
 </head>
 <body oncontextmenu="return false;">
@@ -660,7 +673,7 @@ h2 a:hover {
     <footer>
 		<p><a href="mailto:alexandra.bring418@gmail.com">alexandra.bring418@gmail.com</a></p>
 		<hr class="divider">
-        <p style="font-size: 12px">&copy; 2025 Lexi Lynn Photography. All rights reserved.</p>
+        <p style="font-size: 12px">&copy; 2025 Allie Bring Photography. All rights reserved.</p>
     </footer>
 
   <script>
@@ -672,39 +685,70 @@ h2 a:hover {
     const nextBtn = lightbox.querySelector('.next-btn');
 
     let currentIndex = 0;
+    let scrollPosition = 0; // Variable to store scroll position
 
     const openLightbox = (index) => {
-      currentIndex = index;
-      const highResImageUrl = portfolioItems[currentIndex].querySelector('img').src;
-      lightboxImage.src = highResImageUrl;
-      lightbox.style.display = 'block';
-	  document.body.classList.add('no-scroll');
-		document.body.classList.add('modal-open'); // Optional for handling content shift
+        currentIndex = index;
+        const highResImageUrl = portfolioItems[currentIndex].querySelector('img').src;
+        lightboxImage.src = highResImageUrl;
+        lightbox.style.display = 'block';
+
+        // Save the current scroll position
+        scrollPosition = window.scrollY;
+        document.body.classList.add('no-scroll');
+        document.body.classList.add('modal-open');
+        document.body.style.top = `-${scrollPosition}px`; // Set body top to negative scroll position
     };
 
     const closeLightbox = () => {
-      lightbox.style.display = 'none';
-	  document.body.classList.remove('no-scroll');
-		document.body.classList.remove('modal-open'); // Optional for handling content shift
+        lightbox.style.display = 'none';
+        document.body.classList.remove('no-scroll');
+        document.body.classList.remove('modal-open');
+        document.body.style.top = ''; // Reset body top
+        window.scrollTo(0, scrollPosition); // Restore scroll position
     };
 
     const showNextImage = () => {
-      currentIndex = (currentIndex + 1) % portfolioItems.length;
-      openLightbox(currentIndex);
+        currentIndex = (currentIndex + 1) % portfolioItems.length;
+        const highResImageUrl = portfolioItems[currentIndex].querySelector('img').src;
+        lightboxImage.src = highResImageUrl; // Update image source directly
     };
 
     const showPrevImage = () => {
-      currentIndex = (currentIndex - 1 + portfolioItems.length) % portfolioItems.length;
-      openLightbox(currentIndex);
+        currentIndex = (currentIndex - 1 + portfolioItems.length) % portfolioItems.length;
+        const highResImageUrl = portfolioItems[currentIndex].querySelector('img').src;
+        lightboxImage.src = highResImageUrl; // Update image source directly
     };
 
     portfolioItems.forEach((item, index) => {
-      item.addEventListener('click', () => openLightbox(index));
+        item.addEventListener('click', () => openLightbox(index));
     });
 
     closeBtn.addEventListener('click', closeLightbox);
     nextBtn.addEventListener('click', showNextImage);
     prevBtn.addEventListener('click', showPrevImage);
+
+    document.addEventListener('wheel', (event) => {
+        if (lightbox.style.display === 'block') {
+            if (event.deltaY < 0) {
+                showPrevImage();
+            } else {
+                showNextImage();
+            }
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (lightbox.style.display === 'block') {
+            if (event.key === 'ArrowRight') {
+                showNextImage();
+            } else if (event.key === 'ArrowLeft') {
+                showPrevImage();
+            } else if (event.key === 'Escape') {
+                closeLightbox(); // Close lightbox on Escape key
+            }
+        }
+    });
   </script>
 </body>
 </html>
