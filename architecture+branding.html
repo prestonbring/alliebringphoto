@@ -60,8 +60,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 10rem; /* Add padding to align links properly */
-    padding-right: 10rem; /* Add padding to align links properly */
+    padding: 0 5%; /* Add horizontal padding for fluidity */
 	top: 0;
 	left: 0;
 }
@@ -253,6 +252,12 @@ h1 {
 h2 {
     color: #d4746a;
     margin-bottom: 1rem;
+}
+
+h3 {
+    display: flex;
+    justify-content: center; /* Center the links horizontally */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .divider {
@@ -548,6 +553,72 @@ h2 a:hover {
         width: 100%; /* Ensures the full width is preserved */
         top: 0; /* Reset top position */
     }  
+
+/* Responsive Navbar Height */
+@media (max-width: 1400px) {
+    nav {
+        height: 6rem; /* Set a smaller fixed height */
+        padding: 0 5%; /* Maintain horizontal padding */
+    }
+
+    .nav-links {
+        padding: 0.5rem 0; /* Add some vertical padding */
+        align-items: center; /* Center links vertically */
+    }
+
+    .nav-links a {
+        font-size: 1.1rem; /* Reduce font size of links */
+    }
+}
+/* Mobile Styles */
+@media (max-width: 1100px) {
+    nav {
+        padding-left: 2rem; /* Reduce padding for mobile */
+        padding-right: 2rem; /* Reduce padding for mobile */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+        height: auto; /* Allow height to adjust */
+    }
+
+    .logo img {
+        height: auto; /* Maintain aspect ratio */
+        max-height: 80px; /* Set a maximum height for the logo */
+    }
+
+    .nav-links {
+        flex-direction: column; /* Stack links vertically */
+        align-items: center; /* Center links */
+        gap: 1rem; /* Space between links */
+        padding: 1rem 0; /* Add padding around links */
+        text-align: center; /* Center text in links */
+    }
+
+    .portfolio-container {
+        max-width: 90%; /* Increase width on mobile */
+    }
+
+    .portfolio-item {
+        flex: 1 1 calc(100% - 1rem); /* Stack images vertically */
+        max-width: 100%; /* Full width for images */
+    }
+
+    h1, h2, h3 {
+        font-size: 1.5rem; /* Adjust font size for headings */
+    }
+
+    .divider {
+        width: 70%; /* Adjust divider width */
+    }
+
+    .hero-text {
+        font-size: 1.5rem; /* Adjust hero text size */
+    }
+
+    h3 {
+        text-align: center; /* Center the text on mobile */
+        font-size: 1.2rem; /* Adjust font size for better visibility */
+    }
+}
 	</style>
 </head>
 <body oncontextmenu="return false;">
